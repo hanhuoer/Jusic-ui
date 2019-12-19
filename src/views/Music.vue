@@ -578,7 +578,7 @@
         border: 32px solid rgb(16, 16, 16);;
         border-radius: 50%;
         background: linear-gradient(rgb(39, 39, 39), rgb(0, 0, 0), rgb(0, 0, 0), rgb(39, 39, 39));
-        box-shadow: 0 0 20px 2px #000;
+        /*box-shadow: 0 0 20px 2px #000;*/
     }
 
     .album-rotate {
