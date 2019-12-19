@@ -8,17 +8,17 @@
                     <mu-col span="12" sm="12" md="8" lg="8" xl="9">
                         <mu-col span="12">
                             <mu-row>
-                                <mu-col span="12" sm="12" md="4" lg="4" xl="3"
+                                <mu-col span="12" sm="12" md="5" lg="4" xl="3"
                                         style="text-align: center; padding: 0 0 50px 0;">
                                     <mu-avatar :size="albumRotateSize"
-                                               style="border: 2px solid rgba(134, 134, 134, 0.5);">
+                                               style="border: 2px solid rgba(26, 26, 26, 0.5); overflow: hidden; box-shadow: inset 0 0 20px 2px #000;">
                                         <img :class="albumRotate ? 'album album-rotate' : 'album'"
                                              :src="music.pictureUrl ? music.pictureUrl : require('../assets/images/logo.png')"
                                              :style="albumRotateStyle"
                                              alt="pic">
                                     </mu-avatar>
                                 </mu-col>
-                                <mu-col span="12" sm="12" md="8" lg="8" xl="9">
+                                <mu-col span="12" sm="12" md="7" lg="8" xl="9">
                                     <div style="font-size: 24px; font-weight: 400; margin: 4px 0 10px 0; min-height: 31px;">
                                         {{music ? music.name : ''}}
                                     </div>
@@ -111,8 +111,8 @@
                        style="display: none"></audio>
             </div>
         </div>
-        <div id="play" v-if="!isPlay" @click="play" style="position: fixed; width: 100%; height:100%">
-            <mu-icon value="play_circle_filled" color="primary" size="150"
+        <div id="play" v-if="!isPlay" style="position: fixed; width: 100%; height:100%">
+            <mu-icon @click="play" value="play_circle_filled" color="primary" size="150"
                      style="position: fixed; top: calc(50% - 75px); left: calc(50% - 75px); cursor: pointer;"></mu-icon>
         </div>
     </div>
@@ -538,7 +538,11 @@
             let val = document.documentElement.clientWidth;
             // console.log(val);
 
-            if (val <= 766) {
+            if (val <= 700) {
+                this.albumRotateSize = val - 60;
+                this.albumRotateStyle = `border:${Math.floor(val / 10) + 10}px solid rgb(12, 12, 12);`;
+            }
+            if (val > 700 && val <= 766) {
                 this.albumRotateSize = 450;
                 this.albumRotateStyle = 'border:70px solid rgb(12, 12, 12);';
             }
