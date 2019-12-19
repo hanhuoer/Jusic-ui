@@ -1,4 +1,4 @@
-# jusic-ui
+# Jusic-ui
 
 ## Project setup
 ```
