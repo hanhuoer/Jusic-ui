@@ -299,10 +299,10 @@
                     case '置顶音乐':
                         content = sendUtils.parseContent(instruction, chatMessage);
                         if (content === '') {
-                            // console.log('请输入要置顶的音乐', chatMessage)
+                            // console.log('请输入要置顶的音乐 id', chatMessage)
                         } else {
                             stompClient.send('/music/top', {}, JSON.stringify({
-                                name: content,
+                                id: content,
                                 sendTime: Date.now()
                             }));
                         }
@@ -310,10 +310,10 @@
                     case '删除音乐':
                         content = sendUtils.parseContent(instruction, chatMessage);
                         if (content === '') {
-                            // console.log('请输入要删除的音乐', chatMessage)
+                            // console.log('请输入要删除的音乐 id', chatMessage)
                         } else {
                             stompClient.send('/music/delete', {}, JSON.stringify({
-                                name: content,
+                                id: content,
                                 sendTime: Date.now()
                             }));
                         }
