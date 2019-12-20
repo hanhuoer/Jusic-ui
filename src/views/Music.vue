@@ -103,7 +103,7 @@
                     </mu-col>
                 </mu-row>
             </mu-container>
-            <div id="blur" style="opacity: 20%;">
+            <div id="blur" style="opacity: 0.4">
                 <img :src="music.pictureUrl" alt="blur-img">
             </div>
             <div>
