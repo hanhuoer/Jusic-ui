@@ -409,7 +409,14 @@
                             break;
                         case messageUtils.messageType.MUSIC:
                             this.$store.commit('setPlayerMusic', messageContent.data);
-                            this.$store.commit('setPlayerLyrics', musicUtils.parseLyric(messageContent.data.lyric));
+                            if (messageContent.data.lyric === undefined
+                                || typeof (messageContent.data.lyric) === 'undefined'
+                                || messageContent.data.lyric === null
+                                || messageContent.data.lyric === '') {
+                                this.$store.commit('setPlayerLyrics', []);
+                            } else {
+                                this.$store.commit('setPlayerLyrics', musicUtils.parseLyric(messageContent.data.lyric));
+                            }
                             break;
                         case messageUtils.messageType.AUTH_ROOT:
                             this.$store.commit('pushChatData', {
@@ -472,9 +479,13 @@
 
                 // lyric
                 let lyrics = this.$store.getters.getPlayerLyrics;
-                let number = Number(currentTime.toFixed());
-                if (lyrics[number] !== undefined && lyrics[number] !== '') {
-                    this.$store.commit('setPlayerLyric', lyrics[number]);
+                if (lyrics.length === 0) {
+                    this.$store.commit('setPlayerLyric', '暂无歌词');
+                } else {
+                    let number = Number(currentTime.toFixed());
+                    if (lyrics[number] !== undefined && lyrics[number] !== '') {
+                        this.$store.commit('setPlayerLyric', lyrics[number]);
+                    }
                 }
             },
             getScreenWidth: function () {
