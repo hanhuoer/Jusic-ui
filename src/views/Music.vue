@@ -42,12 +42,14 @@
                             <mu-data-table style="background-color: transparent" :selectable="false" :hover="false"
                                            :columns="columns" :data="pick">
                                 <template slot-scope="scope">
+                                    <td class="is-left">{{scope.$index + 1}}</td>
                                     <td class="is-left">{{isRoot||isAdmin? scope.row.name + `[${scope.row.id}]`:
                                         scope.row.name}}
                                     </td>
                                     <td class="is-center">{{scope.row.artist}}</td>
                                     <td class="is-center">{{'《' + scope.row.album.name+'》'}}</td>
-                                    <td class="is-center">{{scope.row.nickName}}</td>
+<!--                                    <td class="is-center">{{scope.row.nickName + scope.row.sessionId?`[${scope.row.sessionId}]`: '[]'}}</td>-->
+                                    <td class="is-center">{{isRoot||isAdmin ? scope.row.nickName + (scope.row.sessionId ? `[${scope.row.sessionId}]` : '') : scope.row.nickName}}</td>
                                 </template>
                             </mu-data-table>
                         </mu-col>
@@ -163,10 +165,11 @@
         data: () => ({
             isPlay: false,
             columns: [
-                {title: '歌曲', name: 'name', width: 200, align: 'center'},
-                {title: '歌手', name: 'calories', align: 'center', sortable: true},
-                {title: '专辑', name: 'fat', align: 'center', sortable: true},
-                {title: '点歌人', name: 'carbs', align: 'center', sortable: true},
+                {title: 'ID', name: 'id', width: 80, align: 'left'},
+                {title: '歌曲', name: 'name', width: 200, align: 'left'},
+                {title: '歌手', name: 'calories', align: 'center'},
+                {title: '专辑', name: 'fat', align: 'center'},
+                {title: '点歌人', name: 'carbs', align: 'center'},
             ],
             albumRotate: false,
             screenWidth: document.documentElement.clientWidth,
