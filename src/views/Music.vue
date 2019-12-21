@@ -3,13 +3,13 @@
         <div v-if="isPlay">
             <navigation></navigation>
             <mu-container class="demo-container">
-                <mu-row></mu-row>
+                <mu-row style="margin-bottom: 40px;"></mu-row>
                 <mu-row gutter>
                     <mu-col span="12" sm="12" md="8" lg="8" xl="9">
                         <mu-col span="12">
                             <mu-row>
                                 <mu-col span="12" sm="12" md="5" lg="4" xl="3"
-                                        style="text-align: center; padding: 0 0 50px 0;">
+                                        style="text-align: center; padding: 0 0 40px 0;">
                                     <mu-avatar :size="albumRotateSize"
                                                style="border: 2px solid rgba(26, 26, 26, 0.5); overflow: hidden; box-shadow: inset 0 0 20px 2px #000;">
                                         <img :class="albumRotate ? 'album album-rotate' : 'album'"
