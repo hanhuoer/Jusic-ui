@@ -67,8 +67,12 @@
                                         <small class="chat-data-user">{{(isRoot||isAdmin) && item.type==='chat'?
                                             item.nickName + `[${item.sessionId}]`: item.nickName}}</small>
                                     </div>
-                                    <div>
-                                        <span :class="item.type==='notice'?'chat-data-notice':'chat-data-content'">{{item.content}}</span>
+                                    <div v-if="item.type==='notice'">
+                                        <span class="chat-data-notice">{{item.content}}</span>
+                                    </div>
+                                    <div v-if="item.type==='chat'" class="chat-data-content">
+                                        <span>{{item.content}}</span>
+                                        <img v-if="item.images.length > 0" v-for="(img, index) in item.images" :src="img" alt="" style="width: 100%; display: block">
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +94,7 @@
                         </mu-col>
                         <mu-col style="margin-bottom: 160px">
                             <div class="chat-quick-bar">
-                                <span @click="musicSkipVote">[投票切歌]</span>
+                                <span @click="openPictureSearch=!openPictureSearch">[搜索图片]</span>
                                 <span @click="musicSkipVote">&nbsp;&nbsp;[投票切歌]&nbsp;&nbsp;</span>
                                 <span @click="openSearch=!openSearch">[搜索音乐]</span>
                             </div>
@@ -160,6 +164,9 @@
                 </mu-row>
             </mu-container>
         </mu-dialog>
+        <mu-dialog id="search-picture" width="auto" :open.sync="openPictureSearch">
+            <chat-search-picture></chat-search-picture>
+        </mu-dialog>
     </div>
 </template>
 
@@ -171,11 +178,13 @@
     import {sendUtils, messageUtils, timeUtils, musicUtils} from '../utils'
     import {baseUrl, isProduction} from "../config/environment";
     import Navigation from '../components/Navigation'
+    import ChatSearchPicture from '../components/ChatSearchPicture'
 
     export default {
         name: "Music",
         components: {
-            Navigation
+            Navigation,
+            ChatSearchPicture
         },
         computed: {
             ...mapGetters({
@@ -234,6 +243,7 @@
             current: 1,
             limit: 10,
             pageCount: 7,
+            openPictureSearch: false,
         }),
         methods: {
             play: function () {
@@ -464,6 +474,16 @@
                             }
                             break;
                         case messageUtils.messageType.CHAT:
+                            // parse picture
+                            let imgList = [];
+                            let matchUrlList = messageContent.data.content.match(/[picture].*?:\/\/[^\s]*/gi);
+                            if (matchUrlList !== null) {
+                                for (let i = 0; i < matchUrlList.length; i++) {
+                                    imgList.push(matchUrlList[i].replace('picture:', ''));
+                                    messageContent.data.content = messageContent.data.content.replace(matchUrlList[i], '');
+                                }
+                            }
+                            messageContent.data.images = imgList;
                             this.$store.commit('pushChatData', messageContent.data);
                             break;
                         case messageUtils.messageType.PICK:
@@ -510,6 +530,10 @@
                         case messageUtils.messageType.SEARCH:
                             this.$store.commit('setSearchCount', messageContent.data.totalSize);
                             this.$store.commit('setSearchData', messageContent.data.data);
+                            break;
+                        case messageUtils.messageType.SEARCH_PICTURE:
+                            this.$store.commit('setSearchPictureCount', messageContent.data.totalSize);
+                            this.$store.commit('setSearchPictureData', messageContent.data.data);
                             break;
                         default:
                             // console.log('未知消息类型', messageType, source);

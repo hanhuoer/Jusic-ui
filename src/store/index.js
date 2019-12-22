@@ -31,7 +31,12 @@ export default new Vuex.Store({
         search: {
             keyword: '',
             count: 0,
-            data: []
+            data: [],
+            picture: {
+                keyword: '',
+                count: 0,
+                data: [],
+            }
         }
     },
     getters: {
@@ -103,6 +108,15 @@ export default new Vuex.Store({
         },
         getSearchCount: state => {
             return state.search.count
+        },
+        getSearchPictureKeyword: state => {
+            return state.search.picture.keyword
+        },
+        getSearchPictureData: state => {
+            return state.search.picture.data
+        },
+        getSearchPictureCount: state => {
+            return state.search.picture.count
         }
     },
     mutations: {
@@ -167,6 +181,15 @@ export default new Vuex.Store({
         },
         setSearchCount: (state, value) => {
             state.search.count = value
+        },
+        setSearchPictureKeyword: (state, value) => {
+            state.search.picture.keyword = value
+        },
+        setSearchPictureData: (state, value) => {
+            state.search.picture.data = value
+        },
+        setSearchPictureCount: (state, value) => {
+            state.search.picture.count = value
         }
     },
     actions: {},
