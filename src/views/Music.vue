@@ -92,7 +92,7 @@
                             <div class="chat-quick-bar">
                                 <span @click="musicSkipVote">[投票切歌]</span>
                                 <span @click="musicSkipVote">&nbsp;&nbsp;[投票切歌]&nbsp;&nbsp;</span>
-                                <span @click="musicSkipVote">[投票切歌]</span>
+                                <span @click="openSearch=!openSearch">[搜索音乐]</span>
                             </div>
                             <p>提示：输入 “点歌 歌名” 即可点歌。</p>
                             <p>例如：点歌 春夏秋冬</p>
@@ -117,6 +117,49 @@
             <mu-icon @click="play" value="play_circle_filled" color="primary" size="150"
                      style="position: fixed; top: calc(50% - 75px); left: calc(50% - 75px); cursor: pointer;"></mu-icon>
         </div>
+        <mu-dialog id="search" width="auto" :open.sync="openSearch">
+            <mu-container>
+                <mu-row>
+                    <mu-col span="11">
+                        <mu-text-field :value="searchKeyword"
+                                       @input="updateSearchKeyword"
+                                       @keydown.enter="search"
+                                       placeholder="请输入关键字搜索..."
+                                       color="#009688"
+                                       class="width-size-100" style="text-align: center"></mu-text-field>
+                    </mu-col>
+                    <mu-col span="1">
+                        <mu-button class="search_btn" icon @click="search">
+                            <mu-icon value="search"></mu-icon>
+                        </mu-button>
+                    </mu-col>
+                </mu-row>
+                <mu-row>
+                    <mu-data-table style="background-color: transparent" :selectable="false" :hover="false"
+                                   :columns="searchColumns" :data="searchData">
+                        <template slot-scope="scope">
+                            <td class="is-left">{{scope.$index + 1}}</td>
+                            <td class="is-left">{{scope.row.name}}
+                            </td>
+                            <td class="is-center">{{scope.row.artist}}</td>
+                            <td class="is-center">{{'《' + scope.row.album.name+'》'}}</td>
+                            <td class="is-center">{{formatterTime(scope.row.duration/1000)}}</td>
+                            <td class="is-center">
+                                <a v-if="showPickButton(scope.row.privilege)" class="search_pick_btn" @click="pickMusic(scope.row)">点歌</a>
+                                <mu-tooltip v-if="!showPickButton(scope.row.privilege)" content="当前音乐不能点播">
+                                    <a v-if="" class="search_pick_btn_disable">点歌</a>
+                                </mu-tooltip>
+                            </td>
+                        </template>
+                    </mu-data-table>
+                </mu-row>
+                <mu-row>
+                    <mu-flex justify-content="center">
+                        <mu-pagination :total="searchCount" :current.sync="current" :page-count="pageCount" :page-size="limit" @change="paginationChange"></mu-pagination>
+                    </mu-flex>
+                </mu-row>
+            </mu-container>
+        </mu-dialog>
     </div>
 </template>
 
@@ -147,7 +190,10 @@
                 pick: 'getPlayerPick',
                 lyric: 'getPlayerLyric',
                 isRoot: 'isSocketRoot',
-                isAdmin: 'isSocketAdmin'
+                isAdmin: 'isSocketAdmin',
+                searchKeyword: 'getSearchKeyword',
+                searchData: 'getSearchData',
+                searchCount: 'getSearchCount'
             }),
             ...mapMutations({
                 // volume: 'setPlayerVolume'
@@ -174,7 +220,20 @@
             albumRotate: false,
             screenWidth: document.documentElement.clientWidth,
             albumRotateSize: 300,
-            albumRotateStyle: ''
+            albumRotateStyle: '',
+            openSearch: false,
+            searchColumns: [
+                {title: 'ID', name: 'id', width: 80, align: 'left'},
+                {title: '歌曲', name: 'name', width: 200, align: 'left'},
+                {title: '歌手', name: 'artist', align: 'center'},
+                {title: '专辑', name: 'album', align: 'center'},
+                {title: '时长', name: 'duration', align: 'center'},
+                {title: '操作', name: 'op', align: 'center'}
+            ],
+            keyword: '',
+            current: 1,
+            limit: 10,
+            pageCount: 7,
         }),
         methods: {
             play: function () {
@@ -448,6 +507,10 @@
                             });
                             this.$store.commit('setSocketUserName', messageContent.data.name);
                             break;
+                        case messageUtils.messageType.SEARCH:
+                            this.$store.commit('setSearchCount', messageContent.data.totalSize);
+                            this.$store.commit('setSearchData', messageContent.data.data);
+                            break;
                         default:
                             // console.log('未知消息类型', messageType, source);
                             break;
@@ -457,12 +520,46 @@
             updateChatMessage: function (value) {
                 this.$store.commit('setChatMessage', value);
             },
+            updateSearchKeyword: function (value) {
+                this.$store.commit('setSearchKeyword', value);
+            },
             settingName: function (name) {
                 let stompClient = this.$store.getters.getStompClient;
                 stompClient.send('/setting/name', {}, JSON.stringify({
                     name: name,
                     sendTime: Date.now()
                 }));
+            },
+            search: function () {
+                let stompClient = this.$store.getters.getStompClient;
+                stompClient.send('/music/search', {}, JSON.stringify({
+                    name: this.$store.getters.getSearchKeyword,
+                    sendTime: Date.now(),
+                    pageIndex: this.current,
+                    pageSize: this.limit
+                }));
+            },
+            paginationChange: function(page) {
+                this.current = page;
+                this.search()
+            },
+            pickMusic: function(row) {
+                let stompClient = this.$store.getters.getStompClient;
+                stompClient.send('/music/pick', {}, JSON.stringify({
+                    name: row.id,
+                    sendTime: Date.now()
+                }));
+                this.$toast.message(`[${row.id}]${row.name} - 已发送点歌请求`);
+            },
+            showPickButton(value) {
+                if (Number(value.st) < 0) {
+                    // 没有资源
+                    return false;
+                } else if (Number(value.fl) === 0) {
+                    // 可能需要付费
+                    return false;
+                }
+                return true
             },
             musicSkipVote: function () {
                 let stompClient = this.$store.getters.getStompClient;
@@ -498,6 +595,9 @@
                         _this.screenWidth = document.documentElement.clientWidth;
                     })()
                 };
+            },
+            formatterTime: function(value) {
+                return timeUtils.secondsToHH_mm_ss(value)
             }
         },
         watch: {
@@ -530,9 +630,14 @@
                         _this.timer = false
                     }, 400)
                 }
-                if (val <= 766) {
+                if (val <= 400) {
+                    this.albumRotateStyle = 'border:60px solid rgb(12, 12, 12); padding: 8px;';
+                    this.pageCount = 1
+                }
+                if (val > 400 && val <= 766) {
                     this.albumRotateSize = 450;
                     this.albumRotateStyle = 'border:70px solid rgb(12, 12, 12); padding: 8px;';
+                    this.pageCount = 3
                 }
                 if (val > 766 && val < 1000) {
                     this.albumRotateSize = 160;
@@ -552,9 +657,13 @@
             let val = document.documentElement.clientWidth;
             // console.log(val);
 
-            if (val <= 700) {
+            if (val <= 400) {
+                this.pageCount = 1
+            }
+            if (val > 400 && val <= 700) {
                 this.albumRotateSize = val - 60;
                 this.albumRotateStyle = `border:${Math.floor(val / 10) + 10}px solid rgb(12, 12, 12);`;
+                this.pageCount = 3
             }
             if (val > 700 && val <= 766) {
                 this.albumRotateSize = 450;

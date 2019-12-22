@@ -46,6 +46,7 @@ body, table, tr, td, th {
 .chat-quick-bar {
   padding: 10px 0;
   color: #009688;
+  font-size: 14px;
 
   span {
     cursor: pointer;
@@ -108,3 +109,59 @@ body, table, tr, td, th {
   background-color: #009688; /*滚动条的背景颜色*/
 }
 
+.mu-dialog {
+  background-color: #263238 !important;
+  opacity: 0.9;
+
+  * {
+    color: aliceblue !important;
+  }
+
+  .mu-text-field-input {
+    text-align: center;
+  }
+
+  .mu-input-line, .mu-input-focus-line, .material-icons {
+    color: #009688 !important;
+  }
+
+  .search_pick_btn {
+    background-color: #009688 !important;
+    display: block;
+    padding: 5px 0;
+    cursor: pointer;
+    border-radius: 2px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  }
+
+  .search_pick_btn:hover {
+    background-color: #1ea296 !important;
+  }
+
+  .search_pick_btn_disable {
+    background-color: #3f494e !important;
+    display: block;
+    padding: 5px 0;
+    cursor: not-allowed;
+    border-radius: 2px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  }
+
+  .justify-content-start div {
+    margin: 0 auto;
+  }
+}
+
+.mu-pagination-item.mu-button.is-current {
+  background-color: #009688 !important;
+}
+
+.mu-snackbar {
+  opacity: 0.9;
+  background-color: #263238 !important;
+  color: aliceblue !important;
+
+  .mu-snackbar-message {
+    margin: 0 auto;
+  }
+}

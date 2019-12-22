@@ -27,6 +27,11 @@ export default new Vuex.Store({
         chat: {
             data: [],
             message: ''
+        },
+        search: {
+            keyword: '',
+            count: 0,
+            data: []
         }
     },
     getters: {
@@ -89,6 +94,15 @@ export default new Vuex.Store({
         },
         getChatMessage: state => {
             return state.chat.message;
+        },
+        getSearchKeyword: state => {
+            return state.search.keyword
+        },
+        getSearchData: state => {
+            return state.search.data
+        },
+        getSearchCount: state => {
+            return state.search.count
         }
     },
     mutations: {
@@ -144,6 +158,15 @@ export default new Vuex.Store({
         },
         setChatMessage: (state, value) => {
             state.chat.message = value;
+        },
+        setSearchKeyword: (state, value) => {
+            state.search.keyword = value
+        },
+        setSearchData: (state, value) => {
+            state.search.data = value
+        },
+        setSearchCount: (state, value) => {
+            state.search.count = value
         }
     },
     actions: {},

@@ -54,6 +54,7 @@ export let messageUtils = {
         AUTH: 'AUTH',
         AUTH_ROOT: 'AUTH_ROOT',
         AUTH_ADMIN: 'AUTH_ADMIN',
+        SEARCH: 'SEARCH',
     },
     isKnowMessageType: {},
     parseMessageType: {},
