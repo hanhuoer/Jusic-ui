@@ -17,6 +17,9 @@
                                style="max-height: 200px; overflow: hidden">
                     <img src="../assets/images/fl.jpg">
                 </mu-card-media>
+                <mu-card-text>
+                    聊天、斗图、音乐、点播、娱乐
+                </mu-card-text>
             </mu-card>
             <mu-list>
                 <mu-sub-header>社交</mu-sub-header>
