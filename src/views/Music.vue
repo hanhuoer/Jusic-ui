@@ -451,6 +451,16 @@
                             }));
                         }
                         break;
+                    case '@管理员':
+                        content = sendUtils.parseContent(instruction, chatMessage);
+                        if (content === '') {
+                        } else {
+                            stompClient.send('/mail/send', {}, JSON.stringify({
+                                content: content,
+                                sendTime: Date.now()
+                            }));
+                        }
+                        break;
                     default:
                         if (chatMessage === null || chatMessage === '' || chatMessage.length === 0) {
                             // console.log('消息非法', chatMessage);
