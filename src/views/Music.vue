@@ -92,19 +92,33 @@
                                 </mu-button>
                             </div>
                         </mu-col>
-                        <mu-col style="margin-bottom: 160px">
-                            <div class="chat-quick-bar">
-                                <span @click="openPictureSearch=!openPictureSearch">[搜索图片]</span>
-                                <span @click="musicSkipVote">&nbsp;&nbsp;[投票切歌]&nbsp;&nbsp;</span>
-                                <span @click="openSearch=!openSearch">[搜索音乐]</span>
+                        <mu-col style="margin-bottom: 160px; ">
+                            <div style="padding: 10px 0">
+                                <mu-divider></mu-divider>
+                                <div style="padding: 10px 0">
+                                    <mu-chip color="rgba(0, 150, 136, 0.5)" @click="openPictureSearch=!openPictureSearch">
+                                        搜索图片
+                                    </mu-chip>
+                                    <mu-chip color="rgba(0, 150, 136, 0.5)" @click="musicSkipVote">
+                                        投票切歌
+                                    </mu-chip>
+                                    <mu-chip color="rgba(0, 150, 136, 0.5)" @click="openSearch=!openSearch">
+                                        搜索音乐
+                                    </mu-chip>
+                                </div>
+                                <p>提示：输入 “<span style="color: #009688;">点歌 歌名</span>” 即可点歌。</p>
+                                <p>例如：<span style="color: #009688;">点歌 春夏秋冬</span></p>
+                                <p>支持输入网易云音乐 ID 点歌</p>
+                                <p>没有想要点的音乐？ 快试一试 “<span @click="openSearch=!openSearch" style="cursor: pointer; color: #009688;">[搜索音乐]</span>” 吧</p>
+                                <br/>
+                                <p>如遇不好听的歌可以输入 “<span style="color: #009688;">投票切歌</span>” 或者点击 “<span @click="musicSkipVote" style="cursor: pointer; color: #009688;">[投票切歌]</span>”，当投票人数大于在线人数 30% 时将会切歌。</p>
+                                <br/>
+                                <p>输入 “<span style="color: #009688;">设置昵称 名字</span>” 可以设置自己的显示昵称，仅限当前客户端有效。</p>
+                                <p>想要斗图？ ┏ (゜ω゜)=☞ “<span @click="openPictureSearch=!openPictureSearch" style="cursor: pointer; color: #009688;">[搜索图片]</span>”</p>
+                                <br/>
+                                <p>如果有什么好的想法、建议或问题可以单项向管理员发送消息，（＾∀＾●）ﾉｼ “<span style="color: #009688;">@管理员 内容</span>”, 空格隔开哦!</p>
+                                <p>另外也可以在项目仓库开个 issue 进行公开讨论</p>
                             </div>
-                            <p>提示：输入 “点歌 歌名” 即可点歌。</p>
-                            <p>例如：点歌 春夏秋冬</p>
-                            <p>支持输入网易云音乐 ID 点歌</p>
-                            <br/>
-                            <p>如遇不好听的歌可以输入 “投票切歌” 或者点击 “[投票切歌]”，当投票人数大于在线人数 30% 时将会切歌。</p>
-                            <br/>
-                            <p>输入 “设置昵称 名字” 可以设置自己的显示昵称，仅限当前客户端有效。</p>
                         </mu-col>
                     </mu-col>
                 </mu-row>
