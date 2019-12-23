@@ -683,7 +683,7 @@
                 setTimeout(function () {
                     let chat = document.querySelector('#chat-container');
                     chat.scrollTop = chat.scrollHeight;
-                }, 10)
+                }, 100)
             },
             screenWidth(val) {
                 //监控浏览器高度变化

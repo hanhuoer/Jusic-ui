@@ -31,7 +31,7 @@
         </mu-row>
         <mu-row>
             <mu-flex justify-content="center">
-                <mu-pagination :total="paginationTotal" :current.sync="paginationCurrent" :page-count="5"
+                <mu-pagination :total="searchPictureCount" :current.sync="paginationCurrent" :page-count="5"
                                :page-size="paginationLimit" @change="paginationChange"></mu-pagination>
             </mu-flex>
         </mu-row>
