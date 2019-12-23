@@ -35,6 +35,7 @@ body, table, tr, td, th {
   color: rgb(178, 178, 178);
   max-width: calc(100% - 5px);
   word-break: break-word;
+  display: inline-block;
 }
 
 .chat-message {
