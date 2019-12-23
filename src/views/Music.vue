@@ -265,10 +265,25 @@
                     // console.log('连接到服务器成功！', frame);
                     this.$store.commit('setSocketIsConnected', true);
 
+                    // pre onmessage
                     let afterOnMessage = socketClient.onmessage;
                     socketClient.onmessage = function (message) {
                         _this.messageHandler(message);
                         afterOnMessage(message);
+                    };
+
+                    // pre onclose
+                    let afterOnclose = socketClient.onclose;
+                    socketClient.onclose = function (e) {
+                        if (e.type === 'close') {
+                            _this.$store.commit('setSocketIsConnected', false);
+                            _this.$store.commit('pushChatData', {
+                                type: 'notice',
+                                content: '网络异常, 请尝试重新连接服务器!'
+                            });
+                            _this.$toast.error('网络异常, 请尝试重新连接服务器!')
+                        }
+                        afterOnclose(e);
                     };
 
                     let userName = window.localStorage.getItem('USER_NAME');
