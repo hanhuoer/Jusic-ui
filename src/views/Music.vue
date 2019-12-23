@@ -259,7 +259,9 @@
                 socketClient = new SockJS(baseUrl + '/server');
                 stompClient = Stomp.over(socketClient);
 
-                stompClient.debug = () => {};
+                if (isProduction) {
+                    stompClient.debug = () => {};
+                }
                 stompClient.connect({}, (frame) => {
 
                     // console.log('连接到服务器成功！', frame);
