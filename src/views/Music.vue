@@ -72,7 +72,7 @@
                                     </div>
                                     <div v-if="item.type==='chat'" class="chat-data-content">
                                         <span>{{item.content}}</span>
-                                        <img v-if="item.images.length > 0" v-for="(img, index) in item.images" :src="img" alt="" style="width: 100%; display: block">
+                                        <img v-if="item.images.length > 0" v-for="(img, index) in item.images" :src="img" alt="" style="max-width: 100px; display: block">
                                     </div>
                                 </div>
                             </div>
@@ -517,7 +517,7 @@
                         case messageUtils.messageType.CHAT:
                             // parse picture
                             let imgList = [];
-                            let matchUrlList = messageContent.data.content.match(/[picture].*?:\/\/[^\s]*/gi);
+                            let matchUrlList = messageContent.data.content.match(/[picture]+:[http|https]+:\/\/[^\s]*/gi);
                             if (matchUrlList !== null) {
                                 for (let i = 0; i < matchUrlList.length; i++) {
                                     imgList.push(matchUrlList[i].replace('picture:', ''));
