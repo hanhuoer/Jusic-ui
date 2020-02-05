@@ -56,6 +56,7 @@ export let messageUtils = {
         AUTH_ADMIN: 'AUTH_ADMIN',
         SEARCH: 'SEARCH',
         SEARCH_PICTURE: 'SEARCH_PICTURE',
+        PLAYLIST: 'PLAYLIST',
     },
     isKnowMessageType: {},
     parseMessageType: {},

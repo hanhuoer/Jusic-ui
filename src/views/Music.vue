@@ -475,6 +475,20 @@
                             }));
                         }
                         break;
+                    case '刷新歌单':
+                        stompClient.send('/playlist/update', {}, {});
+                        break;
+                    case '切换歌单':
+                        content = sendUtils.parseContent(instruction, chatMessage);
+                        if (content === '') {
+                            // console.log('请输入要切换的歌单 id', chatMessage);
+                        } else {
+                            stompClient.send('/playlist/modify', {}, JSON.stringify({
+                                id: content,
+                                sendTime: Date.now()
+                            }));
+                        }
+                        break;
                     default:
                         if (chatMessage === null || chatMessage === '' || chatMessage.length === 0) {
                             // console.log('消息非法', chatMessage);
@@ -576,6 +590,16 @@
                             this.$store.commit('setSearchPictureCount', messageContent.data.totalSize);
                             this.$store.commit('setSearchPictureData', messageContent.data.data);
                             break;
+                        case messageUtils.messageType.PLAYLIST:
+                            if (messageContent.message !== undefined
+                                && typeof (messageContent.message) !== 'undefined'
+                                && messageContent.message !== null
+                                && messageContent.message !== '') {
+                                this.$store.commit('pushChatData', {
+                                    content: messageContent.message,
+                                    type: 'notice'
+                                });
+                            }
                         default:
                             // console.log('未知消息类型', messageType, source);
                             break;
