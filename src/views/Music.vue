@@ -105,6 +105,9 @@
                                     <mu-chip color="rgba(0, 150, 136, 0.5)" @click="openSearch=!openSearch">
                                         搜索音乐
                                     </mu-chip>
+                                    <mu-chip color="rgba(0, 150, 136, 0.5)" v-if="isRoot||isAdmin" @click="refreshPlaylist">
+                                        刷新歌单
+                                    </mu-chip>
                                 </div>
                                 <p>提示：输入 “<span style="color: #009688;">点歌 歌名</span>” 即可点歌。</p>
                                 <p>例如：<span style="color: #009688;">点歌 春夏秋冬</span></p>
@@ -476,7 +479,7 @@
                         }
                         break;
                     case '刷新歌单':
-                        stompClient.send('/playlist/update', {}, {});
+                        this.refreshPlaylist();
                         break;
                     case '切换歌单':
                         content = sendUtils.parseContent(instruction, chatMessage);
@@ -653,6 +656,10 @@
             musicSkipVote: function () {
                 let stompClient = this.$store.getters.getStompClient;
                 stompClient.send('/music/skip/vote', {}, {});
+            },
+            refreshPlaylist: function() {
+                let stompClient = this.$store.getters.getStompClient;
+                stompClient.send('/playlist/update', {}, {});
             },
             musicTimeUpdate: function (e) {
                 // progress
