@@ -37,6 +37,9 @@
                 <mu-list-item button href="https://github.com/hanhuoer/Jusic-serve" target="_blank">
                     <mu-list-item-title>Jusic-serve</mu-list-item-title>
                 </mu-list-item>
+                <mu-list-item button href="https://github.com/hanhuoer/Musicoo" target="_blank">
+                    <mu-list-item-title>Musicoo</mu-list-item-title>
+                </mu-list-item>
                 <mu-sub-header>反馈</mu-sub-header>
                 <mu-tooltip content="Jusic 点歌台反馈：985590542">
                     <mu-list-item button href="https://jq.qq.com/?_wv=1027&k=5MBUzwC" target="_blank">
